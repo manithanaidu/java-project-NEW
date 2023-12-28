@@ -4,9 +4,9 @@ pipeline {
     maven 'maven'
   }
   stages {
-    stage('Build app') {
+    stage('SonarQube Analysis') {
       steps {
-        sh 'mvn clean install package'
+        sh 'sonar-scanner -X -Dsonar.sources=. -Dproject.settings=sonar-project.properties -Dsonar.projectKey=java_app -Dsonar.host.url=$SonarQube_URL -Dsonar.login=$SonarQube_Access_Token'
        }
     }
     stage('Push Artifact to S3') {
