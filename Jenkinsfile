@@ -11,7 +11,6 @@ pipeline {
         mvn clean verify sonar:sonar -Dsonar.projectKey=java_app -Dsonar.projectName='java_app' -Dsonar.host.url=$SonarQube_URL -Dsonar.token=$SonarQube_Access_Token
         '''
       }
-   
     }
     stage('Push Artifact to S3') {
       steps {
