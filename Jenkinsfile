@@ -6,8 +6,12 @@ pipeline {
   stages {
     stage('SonarQube Analysis') {
       steps {
-        sh 'sonar-scanner -X -Dsonar.sources=. -Dproject.settings=sonar-project.properties -Dsonar.projectKey=java_app -Dsonar.host.url=$SonarQube_URL -Dsonar.login=$SonarQube_Access_Token'
-       }
+        sh '''
+        export PATH="/opt/sonar-scanner/bin:$PATH"
+        mvn clean verify sonar:sonar -Dsonar.projectKey=Java_app -Dsonar.projectName='Java_app' -Dsonar.host.url=$SonarQube_URL -Dsonar.token=$SonarQube_Access_Token
+        '''
+      }
+   
     }
     stage('Push Artifact to S3') {
       steps {
