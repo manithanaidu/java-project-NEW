@@ -14,7 +14,9 @@ pipeline {
     }
     stage('Push Artifact to S3') {
       steps {
-        sh 'aws s3 cp webapp/target/webapp.war s3://demomaster3'
+         sh '''
+         mv webapp/target/webapp.war webapp/target/webapp.war
+         aws s3 cp webapp/target/webapp.war s3://demomaster3'
        }
     }
     // stage('DockerBuild') {
