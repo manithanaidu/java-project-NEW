@@ -7,7 +7,7 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         sh 'sonar-scanner -X -Dsonar.sources=. -Dproject.settings=sonar-project.properties -Dsonar.projectKey=java_app -Dsonar.host.url=$SonarQube_URL -Dsonar.login=$SonarQube_Access_Token'
-       }
+      }
     }
     stage('Build app') {
       steps {
@@ -17,7 +17,7 @@ pipeline {
     stage('Push Artifact to S3') {
       steps {
         sh 'aws s3 cp webapp/target/webapp.war s3://demomaster3'
-       }
+      }
     }
     // stage('DockerBuild') {
     //  steps {
@@ -44,3 +44,4 @@ pipeline {
 //        subject: "Jenkins Build Notification: ${JOB_NAME}-Build# ${BUILD_NUMBER} ${currentBuild.result}"
 //     }
 // }
+}
