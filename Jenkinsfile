@@ -6,16 +6,17 @@ pipeline {
   stages {
     stage('SonarQube Analysis') {
       steps {
-        sh '''
-        export PATH="/opt/sonar-scanner/bin:$PATH"
-        mvn clean verify sonar:sonar -Dsonar.projectKey=java_app -Dsonar.projectName='java_app' -Dsonar.host.url=$SonarQube_URL -Dsonar.token=$SonarQube_Access_Token
-     }
+        sh 'sonar-scanner -X -Dsonar.sources=. -Dproject.settings=sonar-project.properties -Dsonar.projectKey=java_app -Dsonar.host.url=$SonarQube_URL -Dsonar.login=$SonarQube_Access_Token'
+       }
+    }
+    stage('Build app') {
+      steps {
+        sh 'mvn clean install package'
+      }
     }
     stage('Push Artifact to S3') {
       steps {
-         sh '''
-         aws s3 cp webapp/target/webapp.war s3://demomaster3
-         '''
+        sh 'aws s3 cp webapp/target/webapp.war s3://demomaster3'
        }
     }
     // stage('DockerBuild') {
@@ -43,4 +44,3 @@ pipeline {
 //        subject: "Jenkins Build Notification: ${JOB_NAME}-Build# ${BUILD_NUMBER} ${currentBuild.result}"
 //     }
 // }
-}
