@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    lable 'java-slave'
+  }
   tools {
     maven 'maven'
   }
